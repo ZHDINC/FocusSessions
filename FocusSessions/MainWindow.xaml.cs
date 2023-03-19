@@ -39,6 +39,7 @@ namespace FocusSessions
             timer = new Timer(1000);
             timer.Elapsed += TimerElapsed;
             timer.Start();
+            statusBarText.Text = "No sounds loaded yet.";
         }
 
         private void FocusSessionStartClick(object sender, RoutedEventArgs e)
@@ -50,6 +51,18 @@ namespace FocusSessions
             focusTimerSubscribed = true;
             focusTimerHasEnded = false;
             pauseTimerButton.IsEnabled = true;
+            if(focusFileName == null && breakFileName != null)
+            {
+                statusBarText.Text = "No focus sound set. No sound will play when Focus Session ends.";
+            }
+            if(focusFileName == null && breakFileName == null)
+            {
+                statusBarText.Text = "No sounds set. No sounds will play when either Focus/Break ends.";
+            }
+            if(focusFileName != null && breakFileName == null)
+            {
+                statusBarText.Text = "No break sound set. No sound will play when break ends.";
+            }
         }
 
         private void TimerElapsed(object sender, ElapsedEventArgs e)
@@ -73,9 +86,12 @@ namespace FocusSessions
                 timer.Elapsed -= FocusSessionUpdater;
                 focusTimerSubscribed = false;
                 focusTimerHasEnded = true;
-                SoundPlayer soundPlayer = new SoundPlayer(focusFileName);
-                soundPlayer.Load();
-                soundPlayer.Play();
+                if (focusFileName != null)
+                {
+                    SoundPlayer soundPlayer = new SoundPlayer(focusFileName);
+                    soundPlayer.Load();
+                    soundPlayer.Play();
+                }
                 this.Dispatcher.Invoke(() =>
                 {
                     focusTimeStackPanel.Background = new SolidColorBrush(Colors.White);
@@ -108,9 +124,12 @@ namespace FocusSessions
                 timer.Elapsed += FocusSessionUpdater;
                 focusTimerHasEnded = false;
                 focusTimerSubscribed = true;
-                SoundPlayer soundPlayer = new SoundPlayer(breakFileName);
-                soundPlayer.Load();
-                soundPlayer.Play();
+                if(breakFileName != null)
+                {
+                    SoundPlayer soundPlayer = new SoundPlayer(breakFileName);
+                    soundPlayer.Load();
+                    soundPlayer.Play();
+                }
                 this.Dispatcher.Invoke(() =>
                 {
                     focusTimeStackPanel.Background = new SolidColorBrush(Colors.LightGreen);
@@ -153,6 +172,10 @@ namespace FocusSessions
             dialog.Filter = "Audio Files | *.wav; *.mp3";
             dialog.ShowDialog();
             focusFileName = dialog.FileName;
+            if(focusFileName != null) 
+            {
+                statusBarText.Text = $"Focus Time End audio file: {focusFileName}";
+            }
         }
 
         private void BreakLoaderClick(object sender, RoutedEventArgs e)
@@ -163,6 +186,10 @@ namespace FocusSessions
             dialog.Filter = "Audio Files | *.wav; *.mp3";
             dialog.ShowDialog();
             breakFileName = dialog.FileName;
+            if(breakFileName != null) 
+            {
+                statusBarText.Text = $"Break Time End audio file: {breakFileName}";
+            }
         }
 
         private void soundSaverClick(object sender, RoutedEventArgs e)
