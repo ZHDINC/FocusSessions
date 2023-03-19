@@ -1,0 +1,64 @@
+﻿<Window x:Class="FocusSessions.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FocusSessions"
+        mc:Ignorable="d"
+        Title="Focus Sessions" Height="200" Width="800" Icon="/focustimeicon.ico">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Grid.Row="0" Grid.Column="0" Name="focusTimeStackPanel">
+            <Label Content="Time Remaining in Current Focus Session" FontSize="20"/>
+            <TextBlock TextWrapping="Wrap" Text="" FontSize="20" Name="timerText"/>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Start Timer" HorizontalAlignment="Left" VerticalAlignment="Top" FontSize="18" Click="FocusSessionStartClick" Margin="5"/>
+                <Button Content="Restart Timer" FontSize="18" Click="FocusSessionResumeClick" IsEnabled="False" Name="restartTimerButton" Margin="5"/>
+                <Button Content="Pause Timer" FontSize="18" Click="FocusSessionPauseClick" IsEnabled="False" Name="pauseTimerButton" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Grid.Row="0" Grid.Column="1" Name="breakTimeStackPanel" HorizontalAlignment="Center">
+            <Label Content="Break Time" FontSize="20"/>
+            <TextBlock Text="" FontSize="20" Name="breakText"/>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Focus Time Duration: "/>
+                <ComboBox Name="FocusTimeComboBox">
+                    <ComboBoxItem Content="25" IsSelected="True"/>
+                    <ComboBoxItem Content="30"/>
+                    <ComboBoxItem Content="1"/>
+                </ComboBox>
+                <Label Content="Break Time Duration: "/>
+                <ComboBox Name="BreakTimeComboBox">
+                    <ComboBoxItem Content="5"/>
+                    <ComboBoxItem Content="10" IsSelected="True"/>
+                    <ComboBoxItem Content="15"/>
+                    <ComboBoxItem Content="1"/>
+                </ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                <Label Content="Select Sounds: "/>
+                <Button Content="Focus" Name="focusSfxLoader" Click="FocusLoaderClick" Margin="5"/>
+                <Button Content="Break" Name="breakSfxLoader" Click="BreakLoaderClick" Margin="5"/>
+                <Button Content="Save Sounds" Name="soundSaver" Click="soundSaverClick" Margin="5"/>
+            </StackPanel>
+        </StackPanel>
+        
+        
+        
+        <StatusBar Grid.Row="1" Grid.ColumnSpan="2">
+            <StatusBarItem HorizontalAlignment="Left">
+                <TextBlock Text="" Name="statusBarText"/>
+            </StatusBarItem>
+            <StatusBarItem HorizontalAlignment="Right">
+                <Label Content="" Name="CurrentTime"/>
+            </StatusBarItem>
+        </StatusBar>
+    </Grid>
+</Window>
