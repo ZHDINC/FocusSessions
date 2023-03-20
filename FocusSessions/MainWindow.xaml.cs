@@ -33,13 +33,39 @@ namespace FocusSessions
         bool focusTimerSubscribed;
         bool focusTimerHasEnded;
         string focusFileName, breakFileName;
+        UserSettings userSettings;
         public MainWindow()
         {
             InitializeComponent();
             timer = new Timer(1000);
             timer.Elapsed += TimerElapsed;
             timer.Start();
-            statusBarText.Text = "No sounds loaded yet.";
+            userSettings = new UserSettings();
+            if (userSettings.BreakTimeSFX != "" || userSettings.FocusTimeSFX != "")
+            {
+                if (userSettings.FocusTimeSFX != "")
+                {
+                    focusFileName = userSettings.FocusTimeSFX;
+                    statusBarText.Text += "Loaded previous focus file path. ";
+                }
+                else
+                {
+                    statusBarText.Text += "Didn't load focus file path. ";
+                }
+                if (userSettings.BreakTimeSFX != "")
+                {
+                    breakFileName = userSettings.BreakTimeSFX;
+                    statusBarText.Text += "Loaded previous break file path. ";
+                }
+                else
+                {
+                    statusBarText.Text += "Didn't load break file path. ";
+                }
+            }
+            else
+            {
+                statusBarText.Text = "No sounds loaded.";
+            }
         }
 
         private void FocusSessionStartClick(object sender, RoutedEventArgs e)
@@ -172,9 +198,11 @@ namespace FocusSessions
             dialog.Filter = "Audio Files | *.wav; *.mp3";
             dialog.ShowDialog();
             focusFileName = dialog.FileName;
-            if(focusFileName != null) 
+            if(focusFileName != "") 
             {
-                statusBarText.Text = $"Focus Time End audio file: {focusFileName}";
+                statusBarText.Text = $"Focus Time End audio path saved: {focusFileName}";
+                userSettings.FocusTimeSFX = focusFileName;
+                userSettings.Save();
             }
         }
 
@@ -186,15 +214,12 @@ namespace FocusSessions
             dialog.Filter = "Audio Files | *.wav; *.mp3";
             dialog.ShowDialog();
             breakFileName = dialog.FileName;
-            if(breakFileName != null) 
+            if(breakFileName != "") 
             {
-                statusBarText.Text = $"Break Time End audio file: {breakFileName}";
+                statusBarText.Text = $"Break Time End audio path saved: {breakFileName}";
+                userSettings.BreakTimeSFX = breakFileName;
+                userSettings.Save();
             }
-        }
-
-        private void soundSaverClick(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

@@ -46,7 +46,6 @@
                 <Label Content="Select Sounds: "/>
                 <Button Content="Focus" Name="focusSfxLoader" Click="FocusLoaderClick" Margin="5"/>
                 <Button Content="Break" Name="breakSfxLoader" Click="BreakLoaderClick" Margin="5"/>
-                <Button Content="Save Sounds" Name="soundSaver" Click="soundSaverClick" Margin="5"/>
             </StackPanel>
         </StackPanel>
         
